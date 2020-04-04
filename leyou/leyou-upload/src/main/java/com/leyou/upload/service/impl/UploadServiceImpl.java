@@ -1,8 +1,12 @@
 package com.leyou.upload.service.impl;
 
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.leyou.upload.service.IUploadService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +22,9 @@ public class UploadServiceImpl implements IUploadService {
     private static final List<String> CONTENT_TYPES = Arrays.asList("image/jpeg", "image/gif","image/png");
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UploadServiceImpl.class);
+
+    @Autowired
+    private FastFileStorageClient storageClient;
 
     public String upload(MultipartFile file) {
 
@@ -39,10 +46,17 @@ public class UploadServiceImpl implements IUploadService {
             }
 
             // 保存到服务器
-            file.transferTo(new File("D:\\leyou\\images\\" + originalFilename));
+//            file.transferTo(new File("D:\\leyou\\images\\" + originalFilename));
+            //获取文件后缀名
+            String ext = StringUtils.substringAfterLast(originalFilename, ".");
+            StorePath storePath = this.storageClient.uploadFile(file.getInputStream(), file.getSize(), ext, null);
 
             // 生成url地址，返回
-            return "http://image.leyou.com/" + originalFilename;
+//            return "http://image.leyou.com/" + originalFilename;
+            //获取有组名的图片路径
+            return "http://image.leyou.com/" + storePath.getFullPath();
+
+
         } catch (IOException e) {
             LOGGER.info("服务器内部错误：{}", originalFilename);
             e.printStackTrace();
