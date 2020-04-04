@@ -1,4 +1,4 @@
-package com.leyou.service;
+package com.leyou.upload.service;
 
 import com.leyou.item.pojo.Category;
 

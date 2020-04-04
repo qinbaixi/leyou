@@ -1,8 +1,8 @@
-package com.leyou.service.impl;
+package com.leyou.upload.service.impl;
 
 import com.leyou.item.pojo.Category;
 import com.leyou.mapper.CategoryMapper;
-import com.leyou.service.ICategoryService;
+import com.leyou.upload.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

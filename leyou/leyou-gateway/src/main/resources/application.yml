@@ -12,3 +12,6 @@ zuul:
   prefix: /api # 路由路径前缀
   routes:
     item-service: /item/** # 商品微服务的映射路径
+
+  ignored-services:
+      - upload-service # 忽略upload-service服务

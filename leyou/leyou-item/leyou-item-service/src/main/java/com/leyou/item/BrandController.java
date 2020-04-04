@@ -2,7 +2,7 @@ package com.leyou.item;
 
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Brand;
-import com.leyou.service.IBrandService;
+import com.leyou.upload.service.IBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
