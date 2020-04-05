@@ -29,4 +29,10 @@ public interface IBrandService {
      * @param brand
      */
     void upstateBrand(Brand brand);
+
+    /**
+     *刪除
+     * @param id
+     */
+    void deleteBrand(Long id);
 }

@@ -67,4 +67,9 @@ public class BrandServiceImpl implements IBrandService {
     public void upstateBrand(Brand brand) {
         this.brandMapper.updateByPrimaryKey(brand);
     }
+
+    @Override
+    public void deleteBrand(Long id) {
+        this.brandMapper.deleteByPrimaryKey(id);
+    }
 }

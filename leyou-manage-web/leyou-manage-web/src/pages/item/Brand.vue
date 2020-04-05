@@ -142,6 +142,19 @@
         this.getDataFromServer();
         // 关闭窗口
         this.show = false;
+      },
+      deleteBrand(item){
+        if(confirm('確定要刪除嗎？')){
+        this.$http.get("/item/brand/delete/"+item.id).then(response => {
+          // 重新加载数据
+          this.getDataFromServer();
+          this.$message.success("刪除成功！");
+        }).catch(reason => {
+          this.$message.error("刪除失敗！");
+        });
+        }
+
+
       }
     },
     components:{
