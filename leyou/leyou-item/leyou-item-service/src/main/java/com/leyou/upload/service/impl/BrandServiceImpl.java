@@ -62,4 +62,9 @@ public class BrandServiceImpl implements IBrandService {
             this.brandMapper.insertBrandAndCategory(cid, brand.getId());
         });
     }
+
+    @Override
+    public void upstateBrand(Brand brand) {
+        this.brandMapper.updateByPrimaryKey(brand);
+    }
 }

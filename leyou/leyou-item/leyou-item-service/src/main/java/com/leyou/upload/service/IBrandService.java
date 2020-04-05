@@ -23,4 +23,10 @@ public interface IBrandService {
      * @param cids
      */
     void saveBrand(Brand brand, List<Long> cids);
+
+    /**
+     * 更新
+     * @param brand
+     */
+    void upstateBrand(Brand brand);
 }
