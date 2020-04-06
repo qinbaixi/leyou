@@ -110,10 +110,10 @@
         step: 1, // 子组件中的步骤线索引，默认为1
       }
     },
-    mounted() { // 渲染后执行
+ /*   mounted() { // 渲染后执行
       // 查询数据
       this.getDataFromServer();
-    },
+    }, */
     watch: {
       pagination: { // 监视pagination属性的变化
         deep: true, // deep为true，会监视pagination的属性及属性中的对象属性变化
