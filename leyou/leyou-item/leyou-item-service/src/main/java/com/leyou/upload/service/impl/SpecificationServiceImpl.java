@@ -29,14 +29,15 @@ public class SpecificationServiceImpl implements ISpecificationService {
         return this.groupMapper.select(specGroup);
     }
 
-    /**
-     * 根据条件查询规格参数
-     * @param gid
-     * @return
-     */
-    public List<SpecParam> queryParams(Long gid) {
-        SpecParam param = new SpecParam();
-        param.setGroupId(gid);
-        return this.paramMapper.select(param);
+    @Override
+    public List<SpecParam> queryParams(Long gid, Long cid, Boolean generic, Boolean searching) {
+        SpecParam record = new SpecParam();
+        record.setGroupId(gid);
+        record.setCid(cid);
+        record.setGeneric(generic);
+        record.setSearching(searching);
+        return this.paramMapper.select(record);
     }
+
+
 }

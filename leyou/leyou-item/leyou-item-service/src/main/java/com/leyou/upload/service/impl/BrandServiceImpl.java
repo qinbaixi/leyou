@@ -72,4 +72,9 @@ public class BrandServiceImpl implements IBrandService {
     public void deleteBrand(Long id) {
         this.brandMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public List<Brand> queryBrandsByCid(Long cid) {
+        return this.brandMapper.selectBrandByCid(cid);
+    }
 }

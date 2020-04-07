@@ -19,6 +19,9 @@ public class LeyouCorsConfiguration {
         config.setAllowCredentials(true);
         //3) 允许的请求方式
         config.addAllowedMethod("*");
+        // 4）允许的头信息
+        config.addAllowedHeader("*");
+
 
         //初始化cros配置源信息
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
