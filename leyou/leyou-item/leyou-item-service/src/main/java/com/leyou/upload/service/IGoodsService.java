@@ -2,6 +2,10 @@ package com.leyou.upload.service;
 
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.bo.SpuBo;
+import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.SpuDetail;
+
+import java.util.List;
 
 public interface IGoodsService {
     /**
@@ -19,4 +23,24 @@ public interface IGoodsService {
      * @param spuBo
      */
     void saveGoods(SpuBo spuBo);
+
+    /**
+     * 根据spuId查询spuDetail
+     * @param spuId
+     * @return
+     */
+    SpuDetail querySpuDetailBySpuId(Long spuId);
+
+    /**
+     * 根据spuId查询sku的集合,为了回显方便,把库存也查找出来
+     * @param spuId
+     * @return
+     */
+    List<Sku> querySkusBySpuId(Long spuId);
+
+    /**
+     * 更新商品
+     * @param spuBo
+     */
+    void updateGoods(SpuBo spuBo);
 }

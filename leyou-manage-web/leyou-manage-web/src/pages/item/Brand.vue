@@ -145,7 +145,7 @@
       },
       deleteBrand(item){
         this.$message.confirm('確定要刪除嗎？').then(() => {
-          this.$http.get("/item/brand/delete/"+item.id).then(response => {
+          this.$http.delete("/item/brand/delete/"+item.id).then(response => {
             // 重新加载数据
             this.getDataFromServer();
             this.$message.success("刪除成功！");

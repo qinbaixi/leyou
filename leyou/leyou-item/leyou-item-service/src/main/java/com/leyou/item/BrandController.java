@@ -66,10 +66,10 @@ public class BrandController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteBrand( @PathVariable(value = "id")long id){
         this.brandService.deleteBrand(id);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     /**
