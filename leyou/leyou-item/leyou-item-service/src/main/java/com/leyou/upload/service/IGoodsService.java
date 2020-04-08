@@ -43,4 +43,22 @@ public interface IGoodsService {
      * @param spuBo
      */
     void updateGoods(SpuBo spuBo);
+
+    /**
+     * 下架商品
+     * @param id
+     */
+    void unSalebaleGoods(Long id);
+
+    /**
+     * 上架商品
+     * @param id
+     */
+    void onSalebaleGoods(Long id);
+
+    /**
+     * 删除商品
+     * @param id
+     */
+    void delSpuBySpuId(Long id);
 }

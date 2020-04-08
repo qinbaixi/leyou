@@ -195,4 +195,40 @@ public class GoodsServiceImpl implements IGoodsService {
         this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
     }
 
+    /**
+     * 下架商品
+     * @param id
+     */
+    @Override
+    public void unSalebaleGoods(Long id) {
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setSaleable(false);
+        this.spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    /**、
+     * 上架商品
+     * @param id
+     */
+    @Override
+    public void onSalebaleGoods(Long id) {
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setSaleable(true);
+        this.spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    /**
+     * 删除商品
+     * @param id
+     */
+    @Override
+    public void delSpuBySpuId(Long id) {
+        Spu spu = new Spu();
+        spu.setId(id);
+        spu.setValid(false);
+        this.spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
 }

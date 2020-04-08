@@ -41,16 +41,18 @@
         <td class="text-xs-center">{{ props.item.title }}</td>
         <td class="text-xs-center">{{props.item.cname}}</td>
         <td class="text-xs-center">{{ props.item.bname }}</td>
-        <td class="justify-center layout px-0">
+        <td class="justify-center layout px-0" v-if="props.item.valid" >
           <v-btn icon @click="editGoods(props.item)">
             <i class="el-icon-edit"/>
           </v-btn>
-          <v-btn icon>
-            <i class="el-icon-delete"/>
+          <v-btn icon @click="del(props.item.id)" >
+            <i class="el-icon-delete" />
           </v-btn>
-          <v-btn icon v-if="props.item.saleable">下架</v-btn>
-          <v-btn icon v-else>上架</v-btn>
+
+          <v-btn icon v-if="props.item.saleable" @click="unSaleable(props.item.id)">下架</v-btn>
+          <v-btn icon v-else @click="onSaleable(props.item.id)">上架</v-btn>
         </td>
+      <v-card-text v-else>该商品已删除</v-card-text>
       </template>
     </v-data-table>
     <!--弹出的对话框-->
@@ -165,7 +167,47 @@
         // 获取要编辑的goods
         this.oldGoods = oldGoods;
       },
-      closeWindow() {
+      //下架方法
+      unSaleable(id){
+        this.$message.confirm("你确定下架吗？").then(() =>{
+            this.$http.patch("/item/spu/unsalebale?id="+id)
+            .then(resp => {
+              this.$message.success("下架成功");
+              this.getDataFromServer();
+
+            }).catch(reason => {
+              this.$message.error('下架失败');
+            })
+        }
+        )
+      },
+      //上架方法
+      onSaleable(id){
+        this.$message.confirm("你确定上架吗？").then(() =>{
+            this.$http.patch("/item/spu/onsalebale?id="+id)
+              .then(resp => {
+                this.$message.success("上架成功");
+                this.getDataFromServer();
+
+              }).catch(reason => {
+              this.$message.error('上架失败');
+            })
+          }
+        )
+      },
+      del(id){
+        this.$message.confirm("你确定删除吗？").then(() =>{
+            this.$http.delete("/item/spu/del?id="+id)
+              .then(resp => {
+                this.$message.success("删除成功");
+                this.getDataFromServer();
+              }).catch(reason => {
+              this.$message.error('删除失败');
+            })
+          }
+        )
+      },
+      closeWindow(){
         console.log(1)
         // 重新加载数据
         this.getDataFromServer();
