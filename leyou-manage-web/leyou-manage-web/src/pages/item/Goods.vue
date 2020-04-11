@@ -52,7 +52,7 @@
           <v-btn icon v-if="props.item.saleable" @click="unSaleable(props.item.id)">下架</v-btn>
           <v-btn icon v-else @click="onSaleable(props.item.id)">上架</v-btn>
         </td>
-      <v-card-text v-else>该商品已删除</v-card-text>
+      <v-card-text v-else  >该商品已删除</v-card-text>
       </template>
     </v-data-table>
     <!--弹出的对话框-->
