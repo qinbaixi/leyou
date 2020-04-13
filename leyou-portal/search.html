@@ -275,21 +275,27 @@
         <div class="details">
             <div class="sui-navbar">
                 <div class="navbar-inner filter">
+                    <!--排序字段-->
                     <ul class="sui-nav">
-                        <li class="active">
+                        <li :class="{active:!search.sortBy}" @click="search.sortBy=''">
                             <a href="#">综合</a>
                         </li>
                         <li>
                             <a href="#">销量</a>
                         </li>
-                        <li>
+                        <li @click="search.sortBy='createTime'" :class="{active: search.sortBy==='createTime'}">
                             <a href="#">新品</a>
                         </li>
                         <li>
                             <a href="#">评价</a>
                         </li>
-                        <li>
-                            <a href="#">价格</a>
+                        <li @click="search.sortBy='price'; search.descending = !search.descending"
+                            :class="{active: search.sortBy==='price'}">
+                            <a href="#">
+                                价格
+                                <v-icon v-show="search.descending">arrow_drop_down</v-icon>
+                                <v-icon v-show="!search.descending">arrow_drop_up</v-icon>
+                            </a>
                         </li>
                     </ul>
                     <div class="top-pagination">
@@ -475,6 +481,11 @@
             // 将请求参数转为对象
             const search = ly.parse(location.search.substring(1));
             search.page = search.page ? parseInt(search.page) : 1;
+            //对排序进行初始化，防止为空
+            search.sortBy =search.sortBy || "";
+            //对排序方式进行初始化，转为布尔值
+            search.descending = search.descending === "true" || false;
+
             // 记录在data的search对象中
             this.search = search;
 

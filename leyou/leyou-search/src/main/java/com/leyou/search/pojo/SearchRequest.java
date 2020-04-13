@@ -5,6 +5,26 @@ public class SearchRequest {
 
     private Integer page;// 当前页
 
+    private String sortBy;//排序字段
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public Boolean getDescending() {
+        return descending;
+    }
+
+    public void setDescending(Boolean descending) {
+        this.descending = descending;
+    }
+
+    private Boolean descending;//是否降序
+
     private static final Integer DEFAULT_SIZE = 20;// 每页大小，不从页面接收，而是固定大小
     private static final Integer DEFAULT_PAGE = 1;// 默认页
 

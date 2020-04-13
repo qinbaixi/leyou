@@ -16,6 +16,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -173,7 +176,15 @@ public class SearchServiceImpl implements ISearchService {
         int size = request.getSize();
         queryBuilder.withPageable(PageRequest.of(page - 1, size));
 
-        // 4、查询，获取结果
+        // 4、排序
+        String sortBy = request.getSortBy();
+        Boolean descending = request.getDescending();
+        if(StringUtils.isNotBlank(sortBy)){
+            //如果不为空则进行排序
+            queryBuilder.withSort(SortBuilders.fieldSort(sortBy).order(descending ? SortOrder.DESC : SortOrder.ASC));
+        }
+
+        // 5、查询，获取结果
         Page<Goods> pageInfo = this.goodsRepository.search(queryBuilder.build());
 
         // 封装结果并返回
