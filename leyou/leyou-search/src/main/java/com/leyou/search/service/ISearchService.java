@@ -5,6 +5,7 @@ import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Spu;
 import com.leyou.search.pojo.Goods;
 import com.leyou.search.pojo.SearchRequest;
+import com.leyou.search.pojo.SearchResult;
 
 import java.io.IOException;
 
@@ -22,5 +23,5 @@ public interface ISearchService {
      * @param request
      * @return
      */
-    PageResult<Goods> search(SearchRequest request);
+    SearchResult search(SearchRequest request);
 }
