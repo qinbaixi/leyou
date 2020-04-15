@@ -1,4 +1,4 @@
-package com.leyou.upload.service.impl;
+package com.leyou.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,17 +9,14 @@ import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.pojo.Stock;
 import com.leyou.mapper.*;
-import com.leyou.upload.service.ICategoryService;
-import com.leyou.upload.service.IGoodsService;
+import com.leyou.service.ICategoryService;
+import com.leyou.service.IGoodsService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -229,6 +226,11 @@ public class GoodsServiceImpl implements IGoodsService {
         spu.setId(id);
         spu.setValid(false);
         this.spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    @Override
+    public Spu querySpuById(Long id) {
+        return this.spuMapper.selectByPrimaryKey(id);
     }
 
 }

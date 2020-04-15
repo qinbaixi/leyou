@@ -1,4 +1,4 @@
-package com.leyou.upload.service;
+package com.leyou.service;
 
 import com.leyou.item.pojo.SpecGroup;
 import com.leyou.item.pojo.SpecParam;
@@ -19,4 +19,11 @@ public interface ISpecificationService {
      * @return
      */
     public List<SpecParam> queryParams(Long gid, Long cid, Boolean generic, Boolean searching);
+
+    /**
+     * 根据参数查询SpecGroup
+     * @param cid
+     * @return
+     */
+    List<SpecGroup> queryGroupsWithParam(Long cid);
 }

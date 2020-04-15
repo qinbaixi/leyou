@@ -100,18 +100,15 @@
             <!--面包屑-->
             <ul class="fl sui-breadcrumb">
                 <li><span>全部结果:</span></li>
-                <li ><a href="#">手机</a></li>
-                <li ><span>手机通讯</span></li>
+                <li  v-for="(c,i) in breads" :key="i"><a href="#"v-if="i < 2">{{c.name}}</a>
+                <span v-else>{{c.name}}</span></li>
             </ul>
+
             <!--已选择过滤项-->
             <ul class="tags-choose">
-                <li class="tag">
-                    品牌:<span style="color: red">apple</span>
-                    <i class="sui-icon icon-tb-close"></i>
-                </li>
-                <li class="tag">
-                    内存:<span style="color: red">4G</span>
-                    <i class="sui-icon icon-tb-close"></i>
+                <li class="tag" v-for="(v,k) in search.filter" v-if="k !== 'cid3'" :key="k">
+                    {{k === 'brandId' ? '品牌' : k}}:<span style="color: red">{{getFilterValue(k,v)}}</span></span>
+                    <i class="sui-icon icon-tb-close" @click="removeFilter(k)"></i>
                 </li>
             </ul>
             <div class="clearfix"></div>
@@ -191,7 +188,7 @@
                     <li class="yui3-u-1-5" v-for="(goods,index) in goodsList" :key="goods.id">
                         <div class="list-wrap">
                             <div class="p-img">
-                                <a href="item.html" target="_blank"><img :src="goods.selected.image" height="200"/></a>
+                                <a :href="'item/'+goods.id+'.html'" target="_blank"><img :src="goods.selected.image" height="200"/></a>
                                 <!--多sku图片列表-->
                                 <ul class="skus">
                                     <li :class="{selected: sku.id == goods.selected.id}" v-for="sku in goods.skus" :key="sku.id"
@@ -353,7 +350,8 @@
             total:0 ,//总条数
             totalPage:0 ,//总页数
             filters:[],
-            show:false
+            show:false,
+            breads:[]
         },
         created(){
             // 判断是否有请求参数
@@ -377,6 +375,18 @@
             this.loadData();
 
         },
+        computed:{
+            remainFilters(){
+                const keys = Object.keys(this.search.filter);
+                if(this.search.filter.cid3){
+                    keys.push("cid3")
+                }
+                if(this.search.filter.brandId){
+                    keys.push("brandId")
+                }
+                return this.filters.filter(f => !keys.includes(f.k) && f.options.length > 1);
+            }
+        },
         watch:{
             search:{
                 deep:true,
@@ -393,35 +403,42 @@
         methods:{
             loadData(){
                 // ly.http.post("/search/page", ly.stringify(this.search)).then(resp=>{
-                ly.http.post("/search/page", this.search).then(({data}) =>{
-                    if (data.items.length === 0){
-                        return ;
+                ly.http.post("/search/page", this.search).then(({data}) => {
+                    if (data.items.length === 0) {
+                        return;
                     }
 
 
-                  //转化数据
-                  data.items.forEach(goods => {
-                       //转换skus，吧字符串转化为对象
-                      goods.skus=JSON.parse(goods.skus);
-                      //添加默认选中项
-                      goods.selected = goods.skus[0];
-                  });
+                    //转化数据
+                    data.items.forEach(goods => {
+                        //转换skus，吧字符串转化为对象
+                        goods.skus = JSON.parse(goods.skus);
+                        //添加默认选中项
+                        goods.selected = goods.skus[0];
+                    });
                     //初始化数据
-                   this.goodsList=data.items;
-                    this.total=data.total;
-                    this.totalPage=data.totalPage;
+                    this.goodsList = data.items;
+                    this.total = data.total;
+                    this.totalPage = data.totalPage;
                     this.filters.push({
-                        k:"分类",
-                        options:data.categories
+                        k: "分类",
+                        options: data.categories
                     });
                     this.filters.push({
-                        k:"品牌",
-                        options:data.brands
+                        k: "品牌",
+                        options: data.brands
                     });
                     data.specs.forEach(spec => {
-                        spec.options=spec.options.map(o => ({name:o}) );
+                        spec.options = spec.options.map(o => ({name: o}));
                         this.filters.push(spec);
                     })
+
+                    //初始化品牌过滤参数
+                    if(data.categories.length==1){
+                        ly.http.get("/item/category/all/level?id="+data.categories[0].id).then(resp =>{
+                            this.breads = resp.data;
+                        })
+                    }
 
                 }).catch(reason => {
                 });
@@ -455,9 +472,26 @@
                     obj.filter[k]=o.name;
                 }
                 this.search=obj;
+            },
+            getFilterValue(k,v){
+                // 如果没有过滤参数，我们跳过展示
+                if(!this.filters || this.filters.length === 0){
+                    return null;
+                }
+                let filter = null;
+                // 判断是否是品牌
+                if(k === 'brandId'){
+                    // 返回品牌名称
+                    return this.filters.find(f => f.k === 'brandId').options[0].name;
+                }
+                return v;
+            },
+            removeFilter(k){
+                this.search.filter[k] = null;
             }
 
         },
+
 
         components:{
             lyTop: () => import("./js/pages/top.js")

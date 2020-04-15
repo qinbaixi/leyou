@@ -1,11 +1,11 @@
-package com.leyou.upload.service.impl;
+package com.leyou.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Brand;
 import com.leyou.mapper.BrandMapper;
-import com.leyou.upload.service.IBrandService;
+import com.leyou.service.IBrandService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

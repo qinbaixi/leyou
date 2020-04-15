@@ -1,8 +1,9 @@
-package com.leyou.upload.service;
+package com.leyou.service;
 
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.Spu;
 import com.leyou.item.pojo.SpuDetail;
 
 import java.util.List;
@@ -61,4 +62,11 @@ public interface IGoodsService {
      * @param id
      */
     void delSpuBySpuId(Long id);
+
+    /**
+     * 根据id查询spu
+     * @param id
+     * @return
+     */
+    Spu querySpuById(Long id);
 }

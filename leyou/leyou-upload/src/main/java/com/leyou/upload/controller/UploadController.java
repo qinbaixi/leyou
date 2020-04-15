@@ -1,6 +1,6 @@
 package com.leyou.upload.controller;
 
-import com.leyou.upload.service.IUploadService;
+import com.leyou.service.IUploadService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

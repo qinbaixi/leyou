@@ -1,10 +1,10 @@
-package com.leyou.upload.service.impl;
+package com.leyou.service.impl;
 
 import com.leyou.item.pojo.SpecGroup;
 import com.leyou.item.pojo.SpecParam;
 import com.leyou.mapper.SpecGroupMapper;
 import com.leyou.mapper.SpecParamMapper;
-import com.leyou.upload.service.ISpecificationService;
+import com.leyou.service.ISpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +37,16 @@ public class SpecificationServiceImpl implements ISpecificationService {
         record.setGeneric(generic);
         record.setSearching(searching);
         return this.paramMapper.select(record);
+    }
+
+    @Override
+    public List<SpecGroup> queryGroupsWithParam(Long cid) {
+        List<SpecGroup> groups = this.queryGroupsByCid(cid);
+        groups.forEach(group ->{
+            List<SpecParam> params = this.queryParams(group.getId(), null, null, null);
+            group.setParams(params);
+        });
+        return groups;
     }
 
 

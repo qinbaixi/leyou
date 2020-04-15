@@ -3,9 +3,9 @@ package com.leyou.item;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.Spu;
 import com.leyou.item.pojo.SpuDetail;
-import com.leyou.upload.service.IGoodsService;
-import org.slf4j.Logger;
+import com.leyou.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,18 +110,29 @@ public class GoodsController {
 
     /**
      * 上架商品
+     *
      * @param id
      * @return
      */
     @PatchMapping("spu/onsalebale")
-    public ResponseEntity<Void> onSalebale(@RequestParam(name = "id")Long id){
+    public ResponseEntity<Void> onSalebale(@RequestParam(name = "id") Long id) {
         this.goodsService.onSalebaleGoods(id);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("spu/del")
-    public ResponseEntity<Void> delSpuBySpuId(@RequestParam(name = "id")Long id){
+    public ResponseEntity<Void> delSpuBySpuId(@RequestParam(name = "id") Long id) {
         this.goodsService.delSpuBySpuId(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Spu> querySpuById(@PathVariable("id") Long id) {
+        Spu spu = this.goodsService.querySpuById(id);
+        if (spu == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(spu);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.leyou.upload.service;
+package com.leyou.service;
 
 import com.leyou.item.pojo.Category;
 
@@ -10,4 +10,6 @@ public interface ICategoryService {
     List<Category> queryByBrandId(Long bid);
 
     List<String> queryNamesByIds(List<Long> asList);
+
+    List<Category> queryAllByCid3(Long id);
 }
