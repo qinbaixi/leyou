@@ -24,4 +24,8 @@ public interface ISearchService {
      * @return
      */
     SearchResult search(SearchRequest request);
+
+    void save(Long id) throws IOException;
+
+    void delete(Long id);
 }

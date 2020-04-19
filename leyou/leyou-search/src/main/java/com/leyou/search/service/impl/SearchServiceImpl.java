@@ -217,6 +217,18 @@ public class SearchServiceImpl implements ISearchService {
         return new SearchResult(goodsPage.getTotalElements(), goodsPage.getTotalPages(), goodsPage.getContent(),categories,brands,specs);
     }
 
+    @Override
+    public void save(Long id) throws IOException {
+        Spu spu = this.goodsClient.querySpuById(id);
+        Goods goods = this.buildGoods(spu);
+        this.goodsRepository.save(goods);
+    }
+
+    @Override
+    public void delete(Long id) {
+        this.goodsRepository.deleteById(id);
+    }
+
     /**
      * 构建布尔查询或者说是组合查询
      * @param request

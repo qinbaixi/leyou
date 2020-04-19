@@ -12,6 +12,8 @@ import com.leyou.mapper.*;
 import com.leyou.service.ICategoryService;
 import com.leyou.service.IGoodsService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,8 @@ public class GoodsServiceImpl implements IGoodsService {
     private SpuDetailMapper spuDetailMapper;
     @Autowired
     private SkuMapper skuMapper;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
 
     /**
@@ -109,6 +113,23 @@ public class GoodsServiceImpl implements IGoodsService {
         this.spuDetailMapper.insertSelective(spuDetail);
 
         saveSkuAndStock(spuBo);
+
+        //保存发送
+        sendMessage("insert",spuBo.getId());
+
+    }
+
+    /**
+     * RabbitMq生产方法
+     * @param type
+     * @param id
+     */
+    private void sendMessage(String type,Long id) {
+        try {
+            this.amqpTemplate.convertAndSend("item."+type, id);
+        } catch (AmqpException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -190,6 +211,10 @@ public class GoodsServiceImpl implements IGoodsService {
 
         // 更新spu详情
         this.spuDetailMapper.updateByPrimaryKeySelective(spuBo.getSpuDetail());
+
+        //更新发送
+        sendMessage("upstate",spuBo.getId());
+
     }
 
     /**

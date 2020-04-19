@@ -11,4 +11,10 @@ public interface IGoodsHtmlService {
     * 线程安全实现页面静态化
     */
    void asyncExcute(Long spuId);
+
+    /**
+     * 删除方法
+     * @param id
+     */
+    void deleteHtml(Long id);
 }

@@ -62,4 +62,11 @@ public class GoodsHtmlServiceImpl  implements IGoodsHtmlService {
             }
         });*/
     }
+
+    @Override
+    public void deleteHtml(Long id) {
+        File file = new File("D:\\Program Files (x86)\\nginx-1.14.0\\nginx-1.14.0\\html\\item\\" + id + ".html");
+        //存在则删除
+        file.deleteOnExit();
+    }
 }
