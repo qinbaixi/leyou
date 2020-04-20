@@ -204,7 +204,7 @@
               }).catch(reason => {
               this.$message.error('删除失败');
             })
-          }
+          } 
         )
       },
       closeWindow(){
