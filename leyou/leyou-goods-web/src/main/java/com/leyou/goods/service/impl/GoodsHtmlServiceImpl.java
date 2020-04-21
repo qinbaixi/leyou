@@ -1,6 +1,6 @@
 package com.leyou.goods.service.impl;
 
-import com.leyou.common.util.ThreadUtils;
+import com.leyou.common.utils.ThreadUtils;
 import com.leyou.goods.service.IGoodsHtmlService;
 import com.leyou.goods.service.IGoodsService;
 import org.slf4j.Logger;

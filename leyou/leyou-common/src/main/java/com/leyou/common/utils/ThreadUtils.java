@@ -1,4 +1,4 @@
-package com.leyou.common.util;
+package com.leyou.common.utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
