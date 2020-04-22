@@ -23,4 +23,12 @@ public interface IUserService {
      * @param code
      */
     void register(User user, String code);
+
+    /**
+     * 根据用户名和密码查询用户
+     * @param username
+     * @param password
+     * @return
+     */
+    User queryUser(String username, String password);
 }

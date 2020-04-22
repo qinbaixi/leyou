@@ -96,4 +96,30 @@ public class UserServiceImpl implements IUserService {
         //删除redisCode
         this.redisTemplate.delete(KEY_PREFIX + user.getPhone());
     }
+
+    /**
+     * 根据用户名和密码查询用户
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
+    public User queryUser(String username, String password) {
+        User record = new User();
+        record.setUsername(username);
+        User user = this.userMapper.selectOne(record);
+
+        if(user == null) {
+            return null;
+        }
+         //对用户输入的密码加密后比对
+        password = CodecUtils.md5Hex(password, user.getSalt());
+
+        if (StringUtils.equals(password, user.getPassword())) {
+            return user;
+        }
+
+        return null;
+    }
 }
