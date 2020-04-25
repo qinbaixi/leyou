@@ -6,23 +6,28 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="leyou-auth-service" />
         <module name="leyou-item-interface" />
+        <module name="leyou-upload" />
         <module name="leyou-sms" />
         <module name="leyou-user-interface" />
         <module name="leyou-user-service" />
         <module name="leyou-search" />
         <module name="leyou-gateway" />
-        <module name="leyou-upload" />
-        <module name="leyou-goods-web" />
         <module name="leyou-registry" />
-        <module name="leyou-item-service" />
+        <module name="leyou-goods-web" />
         <module name="leyou-common" />
+        <module name="leyou-item-service" />
+        <module name="leyou-auth-common" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="leyou" options="-parameters" />
+      <module name="leyou-auth" options="-parameters" />
+      <module name="leyou-auth-common" options="-parameters" />
+      <module name="leyou-auth-service" options="-parameters" />
       <module name="leyou-common" options="-parameters" />
       <module name="leyou-gateway" options="-parameters" />
       <module name="leyou-goods-web" options="-parameters" />
