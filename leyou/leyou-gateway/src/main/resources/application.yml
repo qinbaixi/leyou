@@ -17,3 +17,18 @@ zuul:
     auth-service: /auth/** # 授权中心微服务
   ignored-services:
       - upload-service # 忽略upload-service服务
+  add-host-header: true # 携带域名信息转发
+  sensitive-headers:  #覆盖默认敏感头信息，默认zull过滤器中中覆盖了cookie
+
+leyou:
+  jwt:
+    pubKeyPath: D:\leyou\secret\rsa\rsa.pub # 公钥地址
+    cookieName: LY_TOKEN
+  filter:
+    allowPaths:
+      - /api/auth
+      - /api/search
+      - /api/user/register
+      - /api/user/check
+      - /api/user/code
+      - /api/item
