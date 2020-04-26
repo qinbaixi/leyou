@@ -69,4 +69,11 @@ public interface IGoodsService {
      * @return
      */
     Spu querySpuById(Long id);
+
+    /**
+     * 根据skuId查询Sku
+     * @param skuId
+     * @return
+     */
+    Sku querySkuBySkuId(Long skuId);
 }

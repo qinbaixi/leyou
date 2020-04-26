@@ -258,4 +258,15 @@ public class GoodsServiceImpl implements IGoodsService {
         return this.spuMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据skuId查询Sku
+     *
+     * @param skuId
+     * @return
+     */
+    @Override
+    public Sku querySkuBySkuId(Long skuId) {
+        return this.skuMapper.selectByPrimaryKey(skuId);
+    }
+
 }
