@@ -82,4 +82,34 @@ public class AuthController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+    /**
+     * 注销
+     * @param token
+     * @return
+     */
+    @GetMapping("unverify")
+    public ResponseEntity<Void> unverify(
+            @CookieValue("LY_TOKEN") String token,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        try {
+            //使用公钥获取用户信息
+            UserInfo userInfo = JwtUtils.getInfoFromToken(token, this.jwtProperties.getPublicKey());
+            if (userInfo == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            //刷新jwt的时间
+            token = JwtUtils.generateToken(userInfo, this.jwtProperties.getPrivateKey(), 0);
+
+            //设置cookie失效
+            CookieUtils.setCookie(request, response, this.jwtProperties.getCookieName(), token, 0);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 }

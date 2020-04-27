@@ -44,7 +44,7 @@
                         <div class="cart-list">
                             <ul class="goods-list yui3-g" v-for="(cart,index) in carts" :key="index">
                                 <li class="yui3-u-1-24">
-                                    <input type="checkbox" name="" :value="cart"  v-model="selected"/>
+                                    <input type="checkbox" name="" :value="cart" v-model="selected"/>
                                 </li>
                                 <li class="yui3-u-11-24">
                                     <div class="good-item">
@@ -58,15 +58,18 @@
                                     </div>
                                 </li>
 
-                                <li class="yui3-u-1-8"><span style="line-height:70px " class="price">{{ly.formatPrice(cart.price)}}</span></li>
+                                <li class="yui3-u-1-8"><span style="line-height:70px " class="price">{{ly.formatPrice(cart.price)}}</span>
+                                </li>
                                 <li class="yui3-u-1-8" style="padding-top: 20px">
                                     <a href="javascript:void(0)" class="increment mins" @click="decr(cart)">-</a>
-                                    <input autocomplete="off" type="text" value="1" minnum="1" v-model="cart.num" class="itxt" />
+                                    <input autocomplete="off" type="text" value="1" minnum="1" v-model="cart.num"
+                                           class="itxt"/>
                                     <a href="javascript:void(0)" class="increment plus" @click="incr(cart)">+</a>
                                 </li>
-                                <li class="yui3-u-1-8"><span style="line-height:70px " class="sum">{{ly.formatPrice(cart.price * cart.num)}}</span></li>
+                                <li class="yui3-u-1-8"><span style="line-height:70px " class="sum">{{ly.formatPrice(cart.price * cart.num)}}</span>
+                                </li>
                                 <li class="yui3-u-1-8">
-                                    <a href="javascript:void(0);"  @click="deleteCart(index)">删除</a><br />
+                                    <a href="javascript:void(0);" @click="deleteCart(index)">删除</a><br/>
                                     <a href="#none">移到我的关注</a>
                                 </li>
                             </ul>
@@ -92,7 +95,7 @@
                         <span><em>已节省：</em><i>-¥20.00</i></span>
                     </div>
                     <div class="sumbtn">
-                        <a class="sum-btn"  href="getOrderInfo.html"  target="_blank">结算</a>
+                        <a class="sum-btn" href="getOrderInfo.html" target="_blank">结算</a>
                     </div>
                 </div>
             </div>
@@ -267,61 +270,87 @@
             ly,
             carts: [],
             selected: [],
-            check: true
+            check: true,
+            cartList: []
         },
         created() {
-            ly.verify().then(
+            ly.verify().then(()=>{
+                    //先查询本地有没有购物车记录
 
-            ).catch(() => {
+                    if (ly.store.get("LY_CART") == null){
+                        //没有，直接请求
+                        ly.http.get("/cart").then(({data}) => {
+                            this.carts = data;
+                        })
+                    }else {
+                        //先做数据合并
+                        ly.store.get("LY_CART").forEach(cart => {
+                            this.cartList.push({skuId:cart.skuId,num:cart.num});
+                        })
+                      //  console.log(this.cartList);
+                       // console.log(JSON.stringify(this.cartList));
+
+                        //发送请求合并数据
+                        ly.http.post("/cart/merge",{"cartListStr":JSON.stringify(this.cartList)}).then(
+                             //重新请求数据
+                            ly.verify().ly.http.get("/cart").then(({data}) => {
+                                this.carts = data;
+                            })
+
+                        )
+                    }
+            }).catch(() => {
                 //未登录购物车的查询
                 this.carts = ly.store.get("LY_CART");
                 this.selected = this.carts;
             })
 
 
-        } ,
-        computed:{
-          total(){
-            return  this.selected.reduce((c1, c2) => c1 + c2.num, 0);
-          },
-            totalPrice(){
-            return  this.selected.reduce((c1, c2) => c1 + c2.num * c2.price, 0);
+        },
+        computed: {
+            total() {
+                return this.selected.reduce((c1, c2) => c1 + c2.num, 0);
+            },
+            totalPrice() {
+                return this.selected.reduce((c1, c2) => c1 + c2.num * c2.price, 0);
             }
         },
-        watch:{
-          check(newVal){
-              if (newVal){
-                  this.selected = this.carts;
-              }else{
-                  this.selected = [];
-              }
-          }
+        watch: {
+            check(newVal) {
+                if (newVal) {
+                    this.selected = this.carts;
+                } else {
+                    this.selected = [];
+                }
+            }
         },
-        methods:{
+        methods: {
             incr(cart) {
                 cart.num++;
                 ly.verify().then(
-
+                    ly.http.put("/cart",{skuId:cart.skuId,num:cart.num})
                 ).catch(() => {
                     //未登录购物车的查询
-                    ly.store.set("LY_CART",this.carts);
+                    ly.store.set("LY_CART", this.carts);
                 })
             },
-            decr(cart){
-                if (cart.num > 1){
+            decr(cart) {
+                if (cart.num > 1) {
                     cart.num--;
                 }
                 ly.verify().then(
-
+                    ly.http.put("/cart",{skuId:cart.skuId,num:cart.num})
                 ).catch(() => {
-                    ly.store.set("LY_CART",this.carts);
+                    ly.store.set("LY_CART", this.carts);
                 })
             },
-            deleteCart(index){
+            deleteCart(index) {
                 ly.verify().then(
-
+                    ly.http.delete("/cart/"+this.carts[index].skuId).then(() =>{
+                        this.carts.splice(index, 1);
+                    })
                 ).catch(() => {
-                    this.carts.splice(index,1);
+                    this.carts.splice(index, 1);
                     ly.store.set("LY_CART", this.carts);
                 })
 

@@ -6,6 +6,7 @@ const shortcut = {
                <li class='f-item'>乐优欢迎您！</li> \
                <li class='f-item' v-if='user && user.username'>\
                尊敬的会员，<span style='color: red;'>{{user.username}}</span>\
+               <span @click='unverify()'>注销</span>\
                </li>\
                <li v-else class='f-item'> \
                    请<a href='javascript:void(0)' @click='gotoLogin'>登录</a>　 \
@@ -53,6 +54,11 @@ const shortcut = {
     methods: {
         gotoLogin() {
             window.location = "login.html?returnUrl=" + window.location;
+        },
+        unverify() {
+            ly.http.get("/auth/unverify").then(
+                this.user = null
+            );
         }
     }
 }
