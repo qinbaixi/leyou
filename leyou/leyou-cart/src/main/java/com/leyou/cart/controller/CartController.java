@@ -3,6 +3,7 @@ package com.leyou.cart.controller;
 import com.leyou.cart.pojo.Cart;
 import com.leyou.cart.service.ICartService;
 import com.leyou.common.utils.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,9 +45,12 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("merge")
-    public ResponseEntity<Void> mergeCart(@RequestParam("cartListStr")String cartsJson) {
+    @PostMapping("merge")
+    public ResponseEntity<Void> mergeCart(@RequestParam("cartListStr") String cartsJson) {
 
+       if (StringUtils.isBlank(cartsJson)){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
         List<Cart> carts = JsonUtils.parseList(cartsJson, Cart.class);
         if (CollectionUtils.isEmpty(carts)) {

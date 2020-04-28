@@ -95,7 +95,7 @@
                         <span><em>已节省：</em><i>-¥20.00</i></span>
                     </div>
                     <div class="sumbtn">
-                        <a class="sum-btn" href="getOrderInfo.html" target="_blank">结算</a>
+                        <a class="sum-btn" href="javascript:void(0)" @click="toOrder()">结算</a>
                     </div>
                 </div>
             </div>
@@ -288,10 +288,12 @@
                             this.cartList.push({skuId:cart.skuId,num:cart.num});
                         })
                       //  console.log(this.cartList);
-                       // console.log(JSON.stringify(this.cartList));
-
+                       console.log(JSON.stringify(this.cartList));
+                        console.log({cartListStr:JSON.stringify(this.cartList)});
+                        let cartListStr = JSON.stringify(this.cartList);
+                        console.log(cartListStr);
                         //发送请求合并数据
-                        ly.http.post("/cart/merge",{"cartListStr":JSON.stringify(this.cartList)}).then(
+                        ly.http.post("/cart/merge",{"cartListStr":cartListStr}).then(
                              //重新请求数据
                             ly.verify().ly.http.get("/cart").then(({data}) => {
                                 this.carts = data;
@@ -325,6 +327,14 @@
             }
         },
         methods: {
+            toOrder() {
+                ly.verify().then(res => {
+                    ly.store.set("LY_SELECTED",this.selected);
+                    window.location="http://www.leyou.com/getOrderInfo.html";
+                }).catch(() => {
+                    window.location="http://www.leyou.com/login.html?returnUrl=http://www.leyou.com/cart.html";
+                })
+            },
             incr(cart) {
                 cart.num++;
                 ly.verify().then(
