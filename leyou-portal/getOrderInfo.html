@@ -193,7 +193,7 @@
 			</div>
 		</div>
 		<div class="submit">
-			<a class="sui-btn btn-danger btn-xlarge" href="pay.html">提交订单</a>
+			<a class="sui-btn btn-danger btn-xlarge" href="javascript:void(0)" @click="submit()">提交订单</a>
 		</div>
 	</div>
 
@@ -255,6 +255,37 @@
 					return this.totalPrice+this.order.postFee-this.fanxian;
 				}
 
+			},
+			methods:{
+				submit() {
+					ly.verify().then(({data}) => {
+						const adress =this.addresses[this.selectedAddress];
+						let addr = {
+							receiver: adress.name,
+							receiverMobile: adress.phone,
+							receiverState: adress.state,
+							receiverCity: adress.city,
+							receiverDistrict: adress.district,
+							receiverAddress: adress.address,
+							receiverZip: adress.zipCode,
+							invoiceType: 0,
+							sourceType: 2
+						};
+						const orderDetail={orderDetails: this.carts};
+						Object.assign(this.order,addr,orderDetail,{totalPay:this.totalPrice,actualPay:this.actualPrice,buyerMessage:null,buyerNick:data.username});
+						ly.http.post("/order/order",this.order,{
+							//做long类型数据的精度损失处理
+							transformResponse: [
+								function(data){
+									return data;
+								}
+							]
+						}).then(({data}) =>{
+							window.location = "http://www.leyou.com/pay.html?orderId=" + data+"&&actualPrice="+ly.formatPrice(this.actualPrice);
+						})
+
+					})
+				}
 			},
 			components:{
                 shortcut: () => import("/js/pages/shortcut.js")
